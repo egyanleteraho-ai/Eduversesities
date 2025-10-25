@@ -1,0 +1,73 @@
+<!-- Add this to your pricing.html file -->
+<div class="bg-white rounded-2xl p-6 border-2 border-green-200 card-hover relative">
+    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-sm px-4 py-1 rounded-full font-bold">
+        MOST POPULAR
+    </div>
+    <h3 class="text-2xl font-black text-gray-900 mb-2">Pro Plan</h3>
+    <p class="text-4xl font-black text-green-600 mb-4">₹4,999<span class="text-lg text-gray-600">/month</span></p>
+    
+    <ul class="space-y-3 text-gray-600 mb-6">
+        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 8+2 live classes monthly</li>
+        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> Personalized writing coaching</li>
+        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> Progress certificates</li>
+    </ul>
+    
+    <button onclick="initiatePayment('pro')" 
+            class="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-bold hover:from-green-600 hover:to-green-700 transition-all shadow-lg">
+        Get Started
+    </button>
+</div>
+
+<script>
+// Payment Gateway Integration
+function initiatePayment(plan) {
+    const userToken = localStorage.getItem('userToken');
+    
+    if (!userToken) {
+        alert('Please login to continue with payment');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Razorpay Integration
+    const options = {
+        "key": "YOUR_RAZORPAY_KEY_ID",
+        "amount": plan === 'pro' ? 499900 : 299900, // amount in paise
+        "currency": "INR",
+        "name": "Eduversities",
+        "description": `${plan.toUpperCase()} Plan Subscription`,
+        "image": "/logo.png",
+        "handler": function(response) {
+            // Payment success
+            updateUserSubscription(plan, response.razorpay_payment_id);
+        },
+        "prefill": {
+            "name": localStorage.getItem('userName'),
+            "email": localStorage.getItem('userEmail')
+        },
+        "theme": {
+            "color": "#8B5CF6"
+        }
+    };
+    
+    const rzp = new Razorpay(options);
+    rzp.open();
+}
+
+function updateUserSubscription(plan, paymentId) {
+    // Update user subscription in Google Sheets
+    fetch('YOUR_GOOGLE_SCRIPT_URL', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'updateSubscription',
+            email: localStorage.getItem('userEmail'),
+            plan: plan,
+            paymentId: paymentId
+        })
+    }).then(() => {
+        alert('Payment successful! Welcome to Eduversities Pro!');
+        window.location.href = 'dashboard.html';
+    });
+}
+</script>
