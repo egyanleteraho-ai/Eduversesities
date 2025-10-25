@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Eduversities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .otp-input { width: 50px; height: 50px; text-align: center; font-size: 1.2rem; font-weight: bold; margin: 0 5px; border: 2px solid #d1d5db; border-radius: 10px; }
+        .otp-input:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-purple-50 min-h-screen flex items-center justify-center py-8">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
+        <!-- Step 1: Signup Form -->
+        <form id="signupForm" class="form-step active">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-xl sanskrit-text">अ</span>
+                </div>
+                <h1 class="text-3xl font-black text-gray-900">Join Eduversities</h1>
+                <p class="text-gray-600 mt-2">Start your learning journey today</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="name" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                           placeholder="Enter your full name">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                           placeholder="Enter your email">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" id="phone" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                           placeholder="Enter your phone number">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                           placeholder="Create a password">
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" required 
+                           class="w-4 h-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 text-sm text-gray-700">
+                        I agree to the <a href="terms.html" class="text-purple-600 font-semibold">Terms</a> and 
+                        <a href="privacy.html" class="text-purple-600 font-semibold">Privacy Policy</a>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full mt-6 py-3.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg">
+                Create Account
+            </button>
+
+            <div class="mt-4 text-center">
+                <p class="text-gray-600">
+                    Already have an account? 
+                    <a href="login.html" class="text-purple-600 font-semibold hover:underline">Log in</a>
+                </p>
+            </div>
+        </form>
+
+        <!-- Step 2: OTP Verification -->
+        <div id="otpVerification" class="form-step">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="mail" class="w-8 h-8 text-purple-600"></i>
+                </div>
+                <h2 class="text-2xl font-black text-gray-900">Verify Your Email</h2>
+                <p class="text-gray-600 mt-2">We sent a 6-digit code to <span id="emailDisplay" class="font-semibold"></span></p>
+                
+                <div class="mt-6 flex justify-center">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 1)">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 2)">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 3)">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 4)">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 5)">
+                    <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 6)">
+                </div>
+                
+                <button id="verifyOtpBtn" class="w-full mt-6 py-3.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg">
+                    Verify & Continue
+                </button>
+                
+                <div class="mt-4 text-sm text-gray-600">
+                    Didn't receive code? <button id="resendOtp" class="text-purple-600 font-semibold hover:underline">Resend</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SIGNUP_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+        // OTP input navigation
+        function moveToNext(input, nextIndex) {
+            if (input.value.length >= input.maxLength) {
+                const nextInput = input.nextElementSibling;
+                if (nextInput) nextInput.focus();
+            }
+        }
+
+        // Signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(SIGNUP_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'signup', ...userData })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('emailDisplay').textContent = userData.email;
+                    document.getElementById('signupForm').classList.remove('active');
+                    document.getElementById('otpVerification').classList.add('active');
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Signup failed. Please try again.');
+            }
+        });
+
+        // OTP verification
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const otpCode = Array.from(otpInputs).map(input => input.value).join('');
+            
+            if (otpCode.length === 6) {
+                const email = document.getElementById('emailDisplay').textContent;
+                
+                try {
+                    const response = await fetch(SIGNUP_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'verify', email: email, otp: otpCode })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.verified) {
+                        localStorage.setItem('userToken', result.token);
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        alert('Invalid OTP. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('OTP verification error:', error);
+                    alert('Verification failed. Please try again.');
+                }
+            }
+        });
+
+        // Resend OTP
+        document.getElementById('resendOtp').addEventListener('click', async function() {
+            const email = document.getElementById('emailDisplay').textContent;
+            
+            try {
+                await fetch(SIGNUP_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'resend', email: email })
+                });
+                
+                alert('New OTP sent to your email!');
+            } catch (error) {
+                console.error('Resend OTP error:', error);
+            }
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
